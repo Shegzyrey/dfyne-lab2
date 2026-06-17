@@ -33,14 +33,14 @@ jobs:
       - name: Terraform validate
         run: terraform validate
       
-    checkov:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v6
+  checkov:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
 
-        - name: Run checkov
-          uses: bridgecrewio/checkov-action@master
-          with:
-            directory: terraform
-            framework: terraform
-            quiet: true
+      - name: Run checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: terraform
+          framework: terraform
+          quiet: true
