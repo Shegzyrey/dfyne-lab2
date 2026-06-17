@@ -25,6 +25,11 @@ resource "google_storage_bucket" "app_uploads" {
     enabled = true
   }
 
+  logging {
+    log_bucket        = google_storage_bucket.app_uploads.name
+    log_object_prefix = "app_uploads/"
+  }
+
   labels = {
     owner       = "digital"
     environment = "dev"
