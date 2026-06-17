@@ -15,10 +15,10 @@ provider "google" {
 }
 
 resource "google_storage_bucket" "app_uploads" {
-  name          = "${var.project_id}-app-uploads"
-  location      = var.region
-  uniform_bucket_level_access= true
-  force_destroy = false
+  name                        = "${var.project_id}-app-uploads"
+  location                    = var.region
+  uniform_bucket_level_access = true
+  force_destroy               = false
 
   public_access_prevention = "enforced"
   versioning = {
@@ -26,9 +26,9 @@ resource "google_storage_bucket" "app_uploads" {
   }
 
   labels = {
-    owner = "digital"
-    environment= "dev"
-    managed_by = "terraform"
+    owner       = "digital"
+    environment = "dev"
+    managed_by  = "terraform"
   }
 }
 
