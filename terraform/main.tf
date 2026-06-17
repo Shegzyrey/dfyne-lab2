@@ -17,15 +17,25 @@ provider "google" {
 resource "google_storage_bucket" "app_uploads" {
   name          = "${var.project_id}-app-uploads"
   location      = var.region
-  force_destroy = true
+  uniform_bucket_level_access= true
+  force_destroy = false
 
-  uniform_bucket_level_access = false
+  public_access_prevention = "enforced"
+  versioning: {
+    enabled = true
+  }
+
+  labels = {
+    owner = "digital"
+    environment= "dev"
+    managed_by = "terraform"
+  }
 }
 
 resource "google_storage_bucket_iam_member" "public_read" {
   bucket = google_storage_bucket.app_uploads.name
   role   = "roles/storage.objectViewer"
-  member = "allUsers"
+  member = "serviceAccount:${google_service_account.app.email}"
 }
 
 resource "google_service_account" "app" {
@@ -35,6 +45,6 @@ resource "google_service_account" "app" {
 
 resource "google_project_iam_member" "overpowered" {
   project = var.project_id
-  role    = "roles/editor"
+  role    = "roles/datastore.user"
   member  = "serviceAccount:${google_service_account.app.email}"
 }
