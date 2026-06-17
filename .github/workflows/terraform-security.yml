@@ -1,0 +1,46 @@
+name: Terraform Security
+
+on: 
+  pull_request:
+    path: 
+      - "terraform/**"
+      - ".github/workflows/terraform-security.yml"
+  
+  push:
+    branches: [main]
+
+  permissions:
+    contents: read
+
+  jobs:
+    terraform-checks:
+      runs-on: ubuntu-latest
+      defaults:
+        run:
+          working-directory: terraform
+
+      steps:
+        - uses: actions/checkout@v6
+
+        - uses: hashicorp/setup-terraform@v3
+
+        - name: Terraform fmt
+          run: terraform fmt -check -recursive
+
+        - name: Terraform init
+          run: terraform init -backend=false
+
+        - name: Terraform validate
+          run: terraform validate
+      
+      checkov:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v6
+
+          - name: Run checkov
+            uses: bridgecrewio/checkov-action@master
+            with:
+              directory: terraform
+              framework: terraform
+              quiet: true
