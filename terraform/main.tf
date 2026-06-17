@@ -17,12 +17,12 @@ provider "google" {
 resource "google_storage_bucket" "app_uploads" {
   name          = "${var.project_id}-app-uploads"
   location      = var.region
-  force_destory = true
+  force_destroy = true
 
   uniform_bucket_level_access = false
 }
 
-resource "google_storage_bucket_iam_memeber" "public_read" {
+resource "google_storage_bucket_iam_member" "public_read" {
   bucket = google_storage_bucket.app_uploads.name
   role   = "roles/storage.objectViewer"
   member = "allUsers"
@@ -33,7 +33,7 @@ resource "google_service_account" "app" {
   display_name = "App Service Account"
 }
 
-resource "google_project_iam_memeber" "overpowered" {
+resource "google_project_iam_member" "overpowered" {
   project = var.project_id
   role    = "roles/editor"
   member  = "serviceAccount:${google_service_account.app.email}"
