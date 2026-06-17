@@ -48,3 +48,16 @@ resource "google_project_iam_member" "overpowered" {
   role    = "roles/datastore.user"
   member  = "serviceAccount:${google_service_account.app.email}"
 }
+
+resource "google_project_iam_audit_config" "gcs_audit_logs" {
+  project = var.project_id
+  service = "storage.googleapis.com"
+
+  audit_log_config {
+    log_type = "DATA_READ"
+  }
+
+  audit_log_config {
+    log_type = "DATA_WRITE"
+  }
+}
