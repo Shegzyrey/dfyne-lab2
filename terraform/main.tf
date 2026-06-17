@@ -21,7 +21,7 @@ resource "google_storage_bucket" "app_uploads" {
   force_destroy               = false
 
   public_access_prevention = "enforced"
-  versioning = {
+  versioning {
     enabled = true
   }
 
